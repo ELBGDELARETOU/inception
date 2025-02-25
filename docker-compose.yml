@@ -52,6 +52,6 @@ services:
           device: /home/data/wordpress
           o : bind
           type : none
-    networks:
-      inception:
-        name: inception
+networks:
+  inception:
+  name: inception
