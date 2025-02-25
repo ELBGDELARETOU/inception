@@ -17,41 +17,52 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
-    nginx:
-      image: nginx:user
-      container_name: nginx
-      build: ./nginx
-      ports:
-        - "443:443"
-      depends_on:
-        - wordpress
-      volumes:
-        wordpress:/var/www/wordpress
-      networks:
-        -inception
-      restar: always
-    wordpress:
-      image: wordpress:user
-      container_name: wordpress
-      build: ./wordpress
-      depends_on:
-        mariadb:
-          condition: service_healthy
-        volumes:
-          -wordpress:/var/www/wordpress
-        env_file :
-          - .env
-        networks:
-          - inception
-        restart: always
+
+  nginx:
+    image: nginx:user
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
     volumes:
+      - wordpress:/var/www/wordpress
+    networks:
+      - inception
+    restart: always
+
+  wordpress:
+    image: wordpress:user
+    container_name: wordpress
+    build: ./wordpress
+    depends_on:
       mariadb:
-        name: mariadb
-        driver: local
-        driver_opts:
-          device: /home/data/wordpress
-          o : bind
-          type : none
+        condition: service_healthy
+    volumes:
+      - wordpress:/var/www/wordpress
+    env_file :
+      - .env
+    networks:
+      - inception
+    restart: always
+
+volumes:
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      device: /home/data/wordpress
+      o: bind
+      type: none
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/data/wordpress
+      o: bind
+      type: none
+      
 networks:
   inception:
-  name: inception
+    name: inception
