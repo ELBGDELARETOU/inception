@@ -5,4 +5,4 @@ mariadb -e "create user if not exist \`${MYSQL_USER}\`@'%' identified by '${MYSQ
 mariadb -e "grant all privileges on ${MYSQL_DB}. * to \`${MYSQL_USER}\`@'%';"
 mariadb -e "flush privileges;"
 mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
-mysqld_safe --port=3306 --bind-adress=0.0.0.0 --datadir='/var/lib/mysql'
+mysqld_safe --port=3306 --bind-address=0.0.0.0 --datadir='/var/lib/mysql'
