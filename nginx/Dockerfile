@@ -1,18 +1,11 @@
 FROM debian:bullseye
-
-RUN apt-get update -y 
-RUN apt-get upgrade -y
-RUN apt install nginx -y
-RUN apt install vim -y
+RUN apt-get update -y
+RUN  apt-get upgrade -y
+RUN apt-get install -y nginx openssl
 RUN mkdir -p /etc/nginx/ssl
-RUN apt install openssl -y
 RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout \
-/etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=anaouali.42.fr/UID=anaouali"
-
+    /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=anaouali.42.fr/UID=anaouali"
 COPY ./nginx.conf /etc/nginx/nginx.conf
-
 RUN mkdir -p /var/www/wordpress
-RUN chmod 755 /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-
-CMD [ "nginx", "-g", "daemon off;"]
+RUN chown -R www-data:www-data /var/www/wordpress
+CMD ["nginx", "-g", "daemon off;"]
